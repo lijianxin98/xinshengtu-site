@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约管理后台 - 昕升途</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7F1D1D 0%, #B91C1C 50%, #DC2626 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(185, 28, 28, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #B91C1C;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .controls button, .controls select {
+            padding: 10px 20px;
+            border: 2px solid #B91C1C;
+            background: white;
+            color: #B91C1C;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .controls button:hover {
+            background: #B91C1C;
+            color: white;
+        }
+        
+        .controls button.primary {
+            background: #B91C1C;
+            color: white;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #B91C1C;
+            color: white;
+        }
+        
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            font-weight: 600;
+        }
+        
+        tbody tr:hover {
+            background: #FEF2F2;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-待处理 {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .status-已联系 {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .status-已完成 {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-已取消 {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: none;
+            background: #B91C1C;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .action-btn:hover {
+            background: #991B1B;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+        }
+        
+        .empty i {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        
+        @media (max-width: 968px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 预约管理后台</h1>
+        <p>昕升途·志愿智能体 - 客户预约信息管理</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h3>总预约数</h3>
+            <div class="number" id="totalCount">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>待处理</h3>
+            <div class="number" id="pendingCount">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>今日新增</h3>
+            <div class="number" id="todayCount">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>已完成</h3>
+            <div class="number" id="completedCount">-</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="primary" onclick="loadAppointments()">
+            <i class="fas fa-sync-alt"></i> 刷新数据
+        </button>
+        <select id="statusFilter" onchange="loadAppointments()">
+            <option value="">全部状态</option>
+            <option value="待处理">待处理</option>
+            <option value="已联系">已联系</option>
+            <option value="已完成">已完成</option>
+            <option value="已取消">已取消</option>
+        </select>
+        <button onclick="exportData()">
+            <i class="fas fa-download"></i> 导出数据
+        </button>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>提交时间</th>
+                    <th>家长姓名</th>
+                    <th>联系电话</th>
+                    <th>考生姓名</th>
+                    <th>分数段</th>
+                    <th>联系时间</th>
+                    <th>服务类型</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td colspan="9" class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        // 加载预约数据
+        async function loadAppointments() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '<tr><td colspan="9" class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</td></tr>';
+            
+            try {
+                let url = 'tables/appointments?limit=100&sort=-submit_time';
+                if (statusFilter) {
+                    url += `&search=${statusFilter}`;
+                }
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                if (result.data && result.data.length > 0) {
+                    displayAppointments(result.data);
+                    updateStats(result.data);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="9" class="empty"><i class="fas fa-inbox"></i><p>暂无预约记录</p></td></tr>';
+                }
+            } catch (error) {
+                console.error('加载失败:', error);
+                tbody.innerHTML = '<tr><td colspan="9" class="empty"><i class="fas fa-exclamation-triangle"></i><p>加载失败，请刷新重试</p></td></tr>';
+            }
+        }
+        
+        // 显示预约数据
+        function displayAppointments(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${formatDateTime(item.submit_time)}</td>
+                    <td>${item.parent_name}</td>
+                    <td><a href="tel:${item.phone}">${item.phone}</a></td>
+                    <td>${item.student_name}</td>
+                    <td>${item.score_range || '-'}</td>
+                    <td>${item.contact_time || '-'}</td>
+                    <td>${item.service_type || '-'}</td>
+                    <td><span class="status-badge status-${item.status}">${item.status}</span></td>
+                    <td>
+                        <button class="action-btn" onclick="updateStatus('${item.id}', '已联系')">已联系</button>
+                        <button class="action-btn" onclick="updateStatus('${item.id}', '已完成')">完成</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // 更新统计数据
+        function updateStats(data) {
+            document.getElementById('totalCount').textContent = data.length;
+            document.getElementById('pendingCount').textContent = data.filter(i => i.status === '待处理').length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('todayCount').textContent = data.filter(i => 
+                i.submit_time && i.submit_time.startsWith(today)
+            ).length;
+            
+            document.getElementById('completedCount').textContent = data.filter(i => i.status === '已完成').length;
+        }
+        
+        // 更新状态
+        async function updateStatus(id, newStatus) {
+            if (!confirm(`确认将状态更新为"${newStatus}"？`)) return;
+            
+            try {
+                const response = await fetch(`tables/appointments/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                if (response.ok) {
+                    alert('状态更新成功！');
+                    loadAppointments();
+                } else {
+                    throw new Error('更新失败');
+                }
+            } catch (error) {
+                console.error('更新失败:', error);
+                alert('状态更新失败，请重试');
+            }
+        }
+        
+        // 格式化日期时间
+        function formatDateTime(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // 导出数据
+        function exportData() {
+            alert('导出功能开发中...');
+            // TODO: 实现CSV导出
+        }
+        
+        // 页面加载时自动加载数据
+        window.addEventListener('load', loadAppointments);
+    </script>
+</body>
+</html>

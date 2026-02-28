@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心差异测试页面</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #FEF2F2;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 4px solid #B91C1C;
+        }
+        .status h2 {
+            color: #B91C1C;
+            margin-top: 0;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2E8B57;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="status">
+            <h2>✅ 核心差异区显示测试</h2>
+            <p>以下应该显示三张卡片，每张卡片左上角都有红色圆形编号（1、2、3）：</p>
+            <ul class="checklist">
+                <li>第1张卡片：深红色圆形编号"1"，白色背景</li>
+                <li>第2张卡片：鲜红色圆形编号"2"，淡红背景，红色边框（高亮）</li>
+                <li>第3张卡片：深红色圆形编号"3"，白色背景</li>
+            </ul>
+        </div>
+
+        <!-- 核心差异区 -->
+        <section class="difference" style="padding: 40px 0;">
+            <div class="container">
+                <h2 class="section-title">我们的不同</h2>
+                <div class="diff-cards">
+                    <div class="diff-card">
+                        <div class="diff-number">1</div>
+                        <h3>别人多是"分数不浪费"</h3>
+                        <p>传统志愿服务聚焦于分数排位匹配，追求"不浪费每一分"，但往往忽略孩子的特质与长期发展路径。</p>
+                    </div>
+                    <div class="diff-card highlight">
+                        <div class="diff-number">2</div>
+                        <h3>我们是"分数+孩子+家庭+未来发展"一起做决策</h3>
+                        <p>综合考虑孩子性格、学习优势、家庭支持能力、城市选择、行业趋势与长期成长空间，给出更适合的方案。</p>
+                    </div>
+                    <div class="diff-card">
+                        <div class="diff-number">3</div>
+                        <h3>交付的不只是一张表</h3>
+                        <p>而是一套可沟通、可执行、提交前可核对的志愿方案，让家长和孩子都能理解并放心执行。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="status">
+            <h2>🎨 颜色说明</h2>
+            <p><strong>编号1和3：</strong></p>
+            <ul class="checklist">
+                <li>背景色：深红色 #B91C1C</li>
+                <li>卡片背景：白色</li>
+                <li>卡片边框：透明</li>
+            </ul>
+            <p><strong>编号2（高亮）：</strong></p>
+            <ul class="checklist">
+                <li>背景色：鲜红色 #DC2626</li>
+                <li>卡片背景：淡红色渐变</li>
+                <li>卡片边框：鲜红色 #DC2626</li>
+                <li>卡片阴影：红色阴影效果</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

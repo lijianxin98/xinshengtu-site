@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速访问 - 昕升途</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #7F1D1D 0%, #B91C1C 50%, #DC2626 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .cards {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+        
+        .card i {
+            font-size: 48px;
+            color: #B91C1C;
+            margin-bottom: 16px;
+        }
+        
+        .card h2 {
+            font-size: 24px;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: #6B7280;
+            margin-bottom: 20px;
+        }
+        
+        .card .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #B91C1C;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .card .btn:hover {
+            background: #991B1B;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 昕升途·志愿智能体</h1>
+            <p>选择您要访问的页面</p>
+        </div>
+        
+        <div class="cards">
+            <div class="card" onclick="location.href='index.html'">
+                <i class="fas fa-home"></i>
+                <h2>官方网站</h2>
+                <p>查看服务介绍、提交预约表单</p>
+                <a href="index.html" class="btn">进入官网</a>
+            </div>
+            
+            <div class="card" onclick="location.href='admin.html'">
+                <i class="fas fa-chart-line"></i>
+                <h2>管理后台</h2>
+                <p>查看预约数据、管理客户信息</p>
+                <a href="admin.html" class="btn">进入后台</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>昕升途（南京）教育信息咨询有限公司</p>
+            <p>咨询热线：13390900614 | 微信：X13390900614</p>
+        </div>
+    </div>
+</body>
+</html>
