@@ -1,0 +1,15 @@
+{
+  "name": "xinshengtu-site",
+  "version": "1.0.0",
+  "description": "新声图官网项目",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "xinshengtu",
+    "website"
+  ],
+  "author": "lijianxin98",
+  "license": "MIT"
+}
