@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务流程 - 昕升途·志愿智能体</title>
+    <meta name="description" content="昕升途服务流程：体检报告 → 专业展示 → 志愿方案 → 四年规划">
+    <link rel="stylesheet" href="css/original-matched.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 性能优化：Chart.js 改为按需加载 -->
+    <style>
+        /* ===== 流程页专属样式 ===== */
+        
+        /* Hero区 */
+        .process-hero {
+            background: linear-gradient(135deg, #8B1F2F 0%, #A82C3D 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .process-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .process-hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 流程概览卡片 */
+        .process-overview {
+            background: var(--bg-light);
+            padding: 60px 0;
+        }
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .overview-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(139,31,47,0.15);
+            border-color: var(--primary-red);
+        }
+        
+        .overview-card .card-number {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 20px;
+        }
+        
+        .overview-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-red);
+        }
+        
+        .overview-card p {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        .overview-card .card-time {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        
+        /* 详细步骤区 */
+        .process-details {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .detail-section {
+            margin-bottom: 80px;
+        }
+        
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-header {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 40px;
+            align-items: start;
+            margin-bottom: 40px;
+        }
+        
+        .detail-badge {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-light) 100%);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 8px 24px rgba(139,31,47,0.2);
+        }
+        
+        .detail-badge .badge-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        
+        .detail-badge .badge-number {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .detail-info h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .detail-info .subtitle {
+            font-size: 16px;
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+        
+        .detail-info .description {
+            font-size: 18px;
+            color: var(--primary-red);
+            font-weight: 600;
+            background: rgba(139,31,47,0.05);
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-red);
+        }
+        
+        /* 内容卡片网格 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .content-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 24px;
+            border: 2px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 16px rgba(139,31,47,0.1);
+        }
+        
+        .content-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-red);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .content-card h4 i {
+            font-size: 20px;
+        }
+        
+        .content-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .content-card li {
+            padding: 8px 0;
+            color: var(--gray-700);
+            font-size: 15px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+        
+        .content-card li i {
+            color: var(--primary-red);
+            margin-top: 4px;
+            font-size: 12px;
+        }
+        
+        /* 交付物清单 */
+        .deliverables-box {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 3px solid var(--primary-red);
+            box-shadow: 0 4px 16px rgba(139,31,47,0.1);
+        }
+        
+        .deliverables-box h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .deliverables-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .deliverables-item {
+            background: rgba(139,31,47,0.05);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .deliverables-item i {
+            color: var(--primary-red);
+            font-size: 20px;
+        }
+        
+        /* 流程连接线 */
+        .process-connector {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .connector-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--primary-red) 0%, var(--primary-light) 100%);
+            margin: 0 auto 20px;
+        }
+        
+        .connector-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 3px solid var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--primary-red);
+            font-size: 20px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .detail-header {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .detail-badge {
+                margin: 0 auto;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .deliverables-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .process-hero h1 {
+                font-size: 32px;
+            }
+            
+            .process-hero p {
+                font-size: 16px;
+            }
+            
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-info h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="logo-placeholder">昕</div>
+                <span class="brand-name">昕升途·志愿智能体</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="product.html">产品介绍</a></li>
+                <li><a href="process.html" class="active">服务流程</a></li>
+                <li><a href="about.html">关于我们</a></li>
+            </ul>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero区 -->
+    <section class="process-hero">
+        <div class="container">
+            <h1>服务流程</h1>
+            <p>四大交付物 · 从体检到落地再到陪跑的完整服务链</p>
+        </div>
+    </section>
+
+    <!-- 流程概览 -->
+    <section class="process-overview">
+        <div class="container">
+            <h2 class="section-title">四步到位·全程护航</h2>
+            
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="card-number">D1</div>
+                    <h3>体检报告</h3>
+                    <p>问卷驱动，完成家庭约束、学生能力、路径倾向三大维度画像</p>
+                    <div class="card-time">
+                        <i class="fas fa-clock"></i> 预计 7 天
+                    </div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="card-number">D2</div>
+                    <h3>专业展示报告</h3>
+                    <p>基于分数位次，输出可行区间、风险清单、初版方向建议</p>
+                    <div class="card-time">
+                        <i class="fas fa-clock"></i> 预计 11 天
+                    </div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="card-number">D3</div>
+                    <h3>志愿落地方案</h3>
+                    <p>家长共创权重，AI生成冲/稳/保三套志愿表 + 核对清单</p>
+                    <div class="card-time">
+                        <i class="fas fa-clock"></i> 预计 12 天
+                    </div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="card-number">D4</div>
+                    <h3>大学四年规划</h3>
+                    <p>路径目标明确，每学期关键动作，可见成果清单 + 陪跑督管</p>
+                    <div class="card-time">
+                        <i class="fas fa-clock"></i> 持续 4 年
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 详细流程 -->
+    <section class="process-details">
+        <div class="container">
+            
+            <!-- D1 体检报告 -->
+            <div class="detail-section">
+                <div class="detail-header">
+                    <div class="detail-badge">
+                        <div class="badge-label">交付物</div>
+                        <div class="badge-number">D1</div>
+                    </div>
+                    <div class="detail-info">
+                        <h2>体检报告（问卷驱动）</h2>
+                        <p class="subtitle">先做家庭与学生的全面画像，再定制志愿方案</p>
+                        <div class="description">
+                            <i class="fas fa-lightbulb"></i>
+                            通过飞书问卷采集：家庭约束 + 学生能力 + 路径倾向 → 生成量化体检报告
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4><i class="fas fa-home"></i> 家庭硬约束清单</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 城市偏好与范围</li>
+                            <li><i class="fas fa-check-circle"></i> 成本预算上限</li>
+                            <li><i class="fas fa-check-circle"></i> 离家距离要求</li>
+                            <li><i class="fas fa-check-circle"></i> 学校类型接受度（公办/民办/中外合作）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-user-graduate"></i> 学生能力画像雷达</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 学科优势与短板</li>
+                            <li><i class="fas fa-check-circle"></i> 学习风格与习惯</li>
+                            <li><i class="fas fa-check-circle"></i> 性格偏好（外向/内向/动手/动脑）</li>
+                            <li><i class="fas fa-check-circle"></i> 不贴标签，只做客观描述</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-route"></i> 路径倾向与冲突诊断</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 量化路径倾向（考研/就业/出国/考公）</li>
+                            <li><i class="fas fa-check-circle"></i> 识别目标不一致情况</li>
+                            <li><i class="fas fa-check-circle"></i> 预算与路径冲突提示</li>
+                            <li><i class="fas fa-check-circle"></i> 风险偏好不匹配预警</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-comments"></i> 沟通清单与建议</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 家长与学生需对齐的关键问题</li>
+                            <li><i class="fas fa-check-circle"></i> 潜在分歧点提示</li>
+                            <li><i class="fas fa-check-circle"></i> 沟通话术建议</li>
+                            <li><i class="fas fa-check-circle"></i> 为后续权重共创做铺垫</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="deliverables-box">
+                    <h4><i class="fas fa-box-open"></i> D1 交付物清单</h4>
+                    <div class="deliverables-list">
+                        <div class="deliverables-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>家庭约束清单报告</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-chart-radar"></i>
+                            <span>学生画像雷达图</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-route"></i>
+                            <span>路径倾向分析报告</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-comments"></i>
+                            <span>冲突诊断与沟通建议</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 连接线 -->
+            <div class="process-connector">
+                <div class="connector-line"></div>
+                <div class="connector-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+            
+            <!-- D2 专业性展示报告 -->
+            <div class="detail-section">
+                <div class="detail-header">
+                    <div class="detail-badge">
+                        <div class="badge-label">交付物</div>
+                        <div class="badge-number">D2</div>
+                    </div>
+                    <div class="detail-info">
+                        <h2>专业性展示报告（基准版）</h2>
+                        <p class="subtitle">单方面生成，先立专业感</p>
+                        <div class="description">
+                            <i class="fas fa-lightbulb"></i>
+                            基于分数位次 + 体检报告 → 可行区间 + 方向建议 + 风险清单 + 取舍解释
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4><i class="fas fa-sliders-h"></i> 可行区间与边界条件</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 根据分数位次确定"冲/稳/保"区间</li>
+                            <li><i class="fas fa-check-circle"></i> 明确可报考院校专业范围</li>
+                            <li><i class="fas fa-check-circle"></i> 边界条件说明（最低保底线）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-exclamation-triangle"></i> 关键风险提示</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 政策细则（如单科要求）</li>
+                            <li><i class="fas fa-check-circle"></i> 体检限制（色弱/身高等）</li>
+                            <li><i class="fas fa-check-circle"></i> 专业特殊要求</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-balance-scale"></i> 取舍解释框架</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 院校层次 vs 专业匹配的权衡</li>
+                            <li><i class="fas fa-check-circle"></i> 城市选择的收益与代价</li>
+                            <li><i class="fas fa-check-circle"></i> 不同路径的利弊分析</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-compass"></i> 初版方向建议</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 结合体检报告的初步方向</li>
+                            <li><i class="fas fa-check-circle"></i> 参考院校与专业组推荐</li>
+                            <li><i class="fas fa-check-circle"></i> 说明推荐依据与逻辑</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="deliverables-box">
+                    <h4><i class="fas fa-box-open"></i> D2 交付物清单</h4>
+                    <div class="deliverables-list">
+                        <div class="deliverables-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>可行区间分析报告</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-list"></i>
+                            <span>风险清单（需二次核对项）</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-compass"></i>
+                            <span>初版方向建议书</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-book"></i>
+                            <span>取舍解释说明文档</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 连接线 -->
+            <div class="process-connector">
+                <div class="connector-line"></div>
+                <div class="connector-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+            
+            <!-- D3 志愿落地方案 -->
+            <div class="detail-section">
+                <div class="detail-header">
+                    <div class="detail-badge">
+                        <div class="badge-label">交付物</div>
+                        <div class="badge-number">D3</div>
+                    </div>
+                    <div class="detail-info">
+                        <h2>志愿落地方案（共创权重版）</h2>
+                        <p class="subtitle">核心成交交付，冲/稳/保三套志愿表</p>
+                        <div class="description">
+                            <i class="fas fa-lightbulb"></i>
+                            家长选择侧重维度 → AI多目标权衡 → 冲/稳/保三套方案 + 核对清单
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4><i class="fas fa-database"></i> 候选池与筛选依据</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 从海量院校专业中筛选符合条件的候选集</li>
+                            <li><i class="fas fa-check-circle"></i> 筛选依据：分数匹配 + 家庭约束 + 能力适配</li>
+                            <li><i class="fas fa-check-circle"></i> 保证候选池质量与数量平衡</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-list-ol"></i> 冲/稳/保三套志愿表</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 每套方案包含完整志愿排序</li>
+                            <li><i class="fas fa-check-circle"></i> 逐条说明推荐理由与风险提示</li>
+                            <li><i class="fas fa-check-circle"></i> 标注院校层次、专业特点、就业方向</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-shield-alt"></i> 综合风险清单</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 政策风险（单科/体检/特殊要求）</li>
+                            <li><i class="fas fa-check-circle"></i> 录取风险（大小年波动/冷门专业）</li>
+                            <li><i class="fas fa-check-circle"></i> 适配风险（能力不匹配/路径冲突）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-check-double"></i> 提交前核对清单</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 关键信息二次确认项</li>
+                            <li><i class="fas fa-check-circle"></i> 易漏项提醒（专业代码/批次/调剂）</li>
+                            <li><i class="fas fa-check-circle"></i> 最后关头避免失误</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="deliverables-box">
+                    <h4><i class="fas fa-box-open"></i> D3 交付物清单</h4>
+                    <div class="deliverables-list">
+                        <div class="deliverables-item">
+                            <i class="fas fa-table"></i>
+                            <span>冲/稳/保三套志愿表（含理由与风险）</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>综合风险清单</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-check-square"></i>
+                            <span>提交前核对清单</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-file-signature"></i>
+                            <span>志愿方案说明书</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 连接线 -->
+            <div class="process-connector">
+                <div class="connector-line"></div>
+                <div class="connector-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+            
+            <!-- D4 大学四年规划 -->
+            <div class="detail-section">
+                <div class="detail-header">
+                    <div class="detail-badge">
+                        <div class="badge-label">交付物</div>
+                        <div class="badge-number">D4</div>
+                    </div>
+                    <div class="detail-info">
+                        <h2>大学四年规划（持续陪跑）</h2>
+                        <p class="subtitle">志愿只是起点，大学四年才是关键</p>
+                        <div class="description">
+                            <i class="fas fa-lightbulb"></i>
+                            路径目标 + 每学期关键动作 + 可见成果清单 + 一对一督管复盘
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4><i class="fas fa-bullseye"></i> 路径目标明确</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 就业方向（行业/岗位/企业类型）</li>
+                            <li><i class="fas fa-check-circle"></i> 考研路线（保研/考研/专业选择）</li>
+                            <li><i class="fas fa-check-circle"></i> 出国规划（国家/项目/时间节点）</li>
+                            <li><i class="fas fa-check-circle"></i> 考公考编（岗位要求/备考策略）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-calendar-alt"></i> 每学期关键动作</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 必修课程与成绩要求</li>
+                            <li><i class="fas fa-check-circle"></i> 证书考取（英语/计算机/行业证书）</li>
+                            <li><i class="fas fa-check-circle"></i> 竞赛参与（学科/创新/创业竞赛）</li>
+                            <li><i class="fas fa-check-circle"></i> 实习实践（项目/企业/科研）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-trophy"></i> 可见成果清单</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 论文/作品集/项目成果</li>
+                            <li><i class="fas fa-check-circle"></i> 实习证明/推荐信</li>
+                            <li><i class="fas fa-check-circle"></i> 竞赛获奖/荣誉证书</li>
+                            <li><i class="fas fa-check-circle"></i> 简历材料与面试准备</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h4><i class="fas fa-user-check"></i> 陪跑督管与复盘</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 一对一定期沟通（月度/学期）</li>
+                            <li><i class="fas fa-check-circle"></i> 进度跟踪与调整建议</li>
+                            <li><i class="fas fa-check-circle"></i> 阶段复盘与经验总结</li>
+                            <li><i class="fas fa-check-circle"></i> 家庭-学校-机构三方协同</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="deliverables-box">
+                    <h4><i class="fas fa-box-open"></i> D4 交付物清单</h4>
+                    <div class="deliverables-list">
+                        <div class="deliverables-item">
+                            <i class="fas fa-map"></i>
+                            <span>四年成长路线图</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-tasks"></i>
+                            <span>每学期关键动作清单</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-folder-open"></i>
+                            <span>可见成果模板与指导</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span>一对一督管复盘服务</span>
+                        </div>
+                        <div class="deliverables-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>年度成长评估报告</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- CTA区域 -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>从体检报告到大学四年，我们全程陪伴</h2>
+                <p>让志愿填报成为孩子成长的起点，而不是终点</p>
+                <div class="cta-buttons">
+                    <a href="product.html" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i> 了解更多
+                    </a>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> 返回首页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo-placeholder">昕</div>
+                    <p class="footer-company">昕升途（南京）教育信息咨询有限公司</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>产品</h4>
+                        <ul>
+                            <li><a href="product.html">产品介绍</a></li>
+                            <li><a href="process.html">服务流程</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>公司</h4>
+                        <ul>
+                            <li><a href="about.html">关于我们</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>联系方式</h4>
+                        <p class="footer-contact">
+                            <i class="fas fa-globe"></i> 官网：www.xinshengtu.com<br>
+                            <i class="fas fa-phone"></i> 电话：13390900614<br>
+                            <i class="fab fa-weixin"></i> 微信：X13390900614
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 昕升途（南京）教育信息咨询有限公司. 保留所有权利.</p>
+                <p class="disclaimer">本服务为决策辅助，最终以各省考试院/高校官方发布为准</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
